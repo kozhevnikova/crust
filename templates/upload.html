@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+	<head>
+        {{template "nav.html" .}}
+        <title>Index page</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+	</head>
+	<body>
+        <form enctype="multipart/form-data" method="post" action="/upload">
+            <input type="file" name="file"/>
+            <input type="submit" value="Upload file"/>
+        </form>
+        <h5> All files </h5>
+        <ul>
+            {{ range .}}
+                <form method="post" action="/delete">
+                        <input type="hidden" name="filename" value={{.}}/>
+                        <li>{{.}}</li> 
+                        <input type="submit" value="Delete {{.}}"/>
+                </form>
+            {{ end }}
+        </ul>
+	</body> 
+</html>

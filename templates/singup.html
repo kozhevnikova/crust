@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+	<head>
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+                <script>
+                    function send(){
+                        var username = document.getElementById("username").value;
+                        var password = document.getElementById("password").value;
+                        var status;
+                        axios({
+                            method:"post",
+                            url:"/singup",
+                            data:{ 
+                                "username":username,
+                                "password":password,
+                            },
+                        }).then(function(response){
+                            window.location.replace("/");
+                        }).catch(function(error){
+                            alert("User already exists");
+                        });
+                    }
+                </script>
+	</head>
+	<body>
+            <input type="text"	id="username" placeholder="Username" autocomplete="off"/>
+            <input type="password"	id="password" placeholder="Password" autocomplete="off"/>
+            <input id="button" onclick="send()"  type="submit" value="Sing up" /> 
+            <a href="/">Login</a>
+	</body> 
+</html>
