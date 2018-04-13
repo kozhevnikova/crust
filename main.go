@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"html/template"
+	"io"
 	"io/ioutil"
 	"mime/multipart"
 	"net/http"
@@ -59,6 +60,13 @@ func init() {
 
 	loginT = template.Must(template.ParseFiles("./templates/login.html"))
 	registrationT = template.Must(template.ParseFiles("./templates/singup.html"))
+}
+
+func Close(c io.Closer) {
+	err := c.Close()
+	if err != nil {
+		fmt.Fprintln(os.Stderr, "ERROR close >", Red(err))
+	}
 }
 
 func parseConfig() (Config, error) {
@@ -240,7 +248,7 @@ func (router *router) Login(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintln(os.Stderr, "ERROR Login json >", Red(err))
 	}
 
-	defer r.Body.Close()
+	defer Close(r.Body)
 
 	if u.Password != "" && u.Username != "" {
 		newUser := template.HTMLEscapeString(u.Username)
@@ -298,7 +306,7 @@ func (router *router) Singup(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		fmt.Fprintln(os.Stderr, "ERROR Singup json>", Red(err))
 	}
-	defer r.Body.Close()
+	defer Close(r.Body)
 
 	if u.Password != "" || u.Username != "" {
 		newUser := template.HTMLEscapeString(u.Username)
