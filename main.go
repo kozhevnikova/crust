@@ -300,7 +300,7 @@ func (router *router) Singup(w http.ResponseWriter, r *http.Request) {
 	}
 	defer r.Body.Close()
 
-	if u.Username != "" || u.Username != "" {
+	if u.Password != "" || u.Username != "" {
 		newUser := template.HTMLEscapeString(u.Username)
 		newPassword := template.HTMLEscapeString(u.Password)
 
