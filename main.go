@@ -274,7 +274,11 @@ func (router *router) Login(w http.ResponseWriter, r *http.Request) {
 				userid:   returnuserid,
 				username: returnusername,
 			}
-			user.SetCookieValues(w)
+			err := user.SetCookieValues(w)
+			if err != nil {
+				fmt.Fprintln(os.Stderr, "ERROR login set cookies >", Red(err))
+				w.WriteHeader(http.StatusInternalServerError)
+			}
 			w.WriteHeader(http.StatusAccepted)
 		} else if err == sql.ErrConnDone {
 			w.WriteHeader(http.StatusInternalServerError)
