@@ -75,7 +75,7 @@ func parseConfig() (Config, error) {
 	if err != nil {
 		return config, err
 	}
-	defer f.Close()
+	defer Close(f)
 	if err := toml.NewDecoder(f).Decode(&config); err != nil {
 		return config, err
 	}
@@ -396,7 +396,7 @@ func uploadFile(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusBadRequest)
 	}
 	saveFile(w, r, file, handle)
-	defer file.Close()
+	defer Close(file)
 }
 
 func saveFile(
@@ -490,5 +490,8 @@ func main() {
 	router := &router{
 		db: db,
 	}
-	http.ListenAndServe(":8080", router)
+	err = http.ListenAndServe(":8080", router)
+	if err != nil {
+		fmt.Fprintln(os.Stderr, "ERROR server >", Red(err))
+	}
 }
